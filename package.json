@@ -1,0 +1,22 @@
+{
+  "name": "cleanblog",
+  "version": "1.0.0",
+  "description": "cleanblog website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "blog",
+    "website"
+  ],
+  "author": "mahmut sahin",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "prettier": "2.3.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
