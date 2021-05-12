@@ -3,11 +3,21 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Connecting DB
-mongoose.connect("mongodb://localhost/cleanblog-test-db", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-});
+mongoose
+  .connect(
+    "mongodb+srv://mahmutsahin:Os2CbbzqKVRAjIiS@cluster0.nhm6y.mongodb.net/cleanblog-db?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    }
+  )
+  .then(() => {
+    console.log("DB is connected!");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const blogSchema = new Schema({
   title: String,
