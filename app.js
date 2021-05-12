@@ -1,13 +1,15 @@
 const express = require("express");
+const methodOverride = require("method-override");
 const ejs = require("ejs");
-const Blog = require("./models/Blog");
-const { Mongoose } = require("mongoose");
+const pageController = require('./controllers/pageController');
+const blogController = require('./controllers/blogController');
 
 const app = express();
 
 // Middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride("_method", { methods: ["GET", "POST"] }));
 
 // Template Engine
 app.set("view engine", "ejs");
@@ -15,28 +17,15 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 
 // !Routes
-app.get("/", async (req, res) => {
-  const blogs = await Blog.find({});
-  res.render("index", { blogs });
-});
-app.get("/index", async (req, res) => {
-  const blogs = await Blog.find({});
-  res.render("index", { blogs });
-});
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-app.get("/add_post", (req, res) => {
-  res.render("add_post");
-});
-app.post("/blogs", async (req, res) => {
-  await Blog.create(req.body);
-  res.redirect("add_post");
-});
-app.get("/post/:id", async (req, res) => {
-  const blog = await Blog.findById(req.params.id);
-  res.render("post", { blog });
-});
+app.get("/", pageController.getHomePage);
+app.get("/index", pageController.getHomePage);
+app.get("/about", pageController.getAboutPage);
+app.get("/add_post", pageController.getAddPage);
+app.get("/post/:id", pageController.getBlogPage);
+app.get("/edit/:id", pageController.getEditPage);
+app.post("/blogs", blogController.createBlog);
+app.put("/edit/:id", blogController.editBlog);
+app.delete("/post/:id", blogController.deleteBlog);
 
 const port = 3000;
 
