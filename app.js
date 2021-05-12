@@ -1,6 +1,7 @@
 const express = require("express");
 const ejs = require("ejs");
 const Blog = require("./models/Blog");
+const { Mongoose } = require("mongoose");
 
 const app = express();
 
@@ -32,10 +33,9 @@ app.post("/blogs", async (req, res) => {
   await Blog.create(req.body);
   res.redirect("add_post");
 });
-
-// ? POST SAYFASI????
-app.get("/post", (req, res) => {
-  res.render("post");
+app.get("/post/:id", async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+  res.render("post", { blog });
 });
 
 const port = 3000;
