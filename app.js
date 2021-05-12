@@ -1,43 +1,41 @@
-/*
-Clean Blog projemizin bu 2. bölümünde aşağıdaki işlemleri yapalım.
-
-Public klasörü oluşturup statik dosyalarımızı içerisine yerleştirelim.
-İlgili middleware fonksiyonunu yazarak public klasörümüzü uygulamamıza kaydedelim.
-EJS modülünü indirelim.
-Uygulamamızda EJS modülünü kullanacağımızı belirtelim.
-Views klasörü oluşturalım ve tüm .html dosyalarımız views klasörü içerisinde .ejs dosyalarına çevirelim.
-Partials klasör yapısını oluşturalım.
-İlgili yönlendirmeleri ve _navigation.ejs klasöründeki link düzenlemelerini yapalım.
-*/
-
 const express = require("express");
-const ejs = require('ejs');
+const ejs = require("ejs");
+const Blog = require("./models/Blog");
 
 const app = express();
 
+// Middlewares
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 // Template Engine
 app.set("view engine", "ejs");
-
+// Static files
 app.use(express.static("public"));
 
-app.get("/", (req, res) => {
-  res.render("index")
+// !Routes
+app.get("/", async (req, res) => {
+  const blogs = await Blog.find({});
+  res.render("index", { blogs });
 });
-
-app.get("/index", (req, res) => {
-  res.render("index")
+app.get("/index", async (req, res) => {
+  const blogs = await Blog.find({});
+  res.render("index", { blogs });
 });
-
 app.get("/about", (req, res) => {
-  res.render("about")
+  res.render("about");
 });
-
 app.get("/add_post", (req, res) => {
-  res.render("add_post")
+  res.render("add_post");
+});
+app.post("/blogs", async (req, res) => {
+  await Blog.create(req.body);
+  res.redirect("add_post");
 });
 
+// ? POST SAYFASI????
 app.get("/post", (req, res) => {
-  res.render("post")
+  res.render("post");
 });
 
 const port = 3000;
